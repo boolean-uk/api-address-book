@@ -14,4 +14,17 @@ app.get('/contacts', (req, res) => {
     res.status(200).json({contacts})
 })
 
+app.post('/contacts', (req, res) => {
+    const newContact = req.body
+    newContact.id = contacts.length + 1
+    contacts.push(newContact)
+    res.status(201).json(newContact)
+})
+
+app.get('/contacts/:id', (req, res) => {
+    const contactId = req.params.id
+    const contact = contacts.find((contact) => contact.id === Number(contactId))
+    res.status(200).json({contact})
+})
+
 module.exports = app
