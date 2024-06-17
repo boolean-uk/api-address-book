@@ -169,4 +169,23 @@ app.delete('/meetings/:id', (req, res) => {
     })
 })
 
+app.put('/meetings/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const foundMeeting = findID(meetings, id)
+    const foundContact = findID(contacts, id)
+
+    if(!foundMeeting) {
+        return res.status(404).json({
+            idError
+        })
+    }
+
+    foundMeeting.id = foundContact.id
+    foundMeeting.name = req.body.name
+    res.status(200).json({
+        meeting: foundMeeting
+    })
+    
+})
+
 module.exports = app
