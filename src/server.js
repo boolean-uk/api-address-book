@@ -19,6 +19,17 @@ let newContact = {
     twitter: 'string'
 }
 
+let updatedContact = {
+    firstName: 'UPDATED',
+    lastName: 'UPDATED',
+    street: 'UPDATED',
+    city: 'UPDATED',
+    type: 'UPDATED',
+    email: 'UPDATED',
+    linkedin: 'UPDATED',
+    twitter: 'UPDATED'
+}
+
 const idError = {
     error: 'invalid-ID',
     message: 'ID provided does not exist, please ensure a valid ID is provided'
@@ -55,7 +66,7 @@ app.post('/contacts', (req, res) => {
     
     contacts.push(newContact)
     res.status(201).json({
-        newContact
+        contact: newContact
     })
 })
 
@@ -70,7 +81,7 @@ app.get('/contacts/:id', (req, res) => {
     }
 
     res.status(200).json({
-        contacts: found
+        contact: found
     })
 })
 
@@ -88,7 +99,40 @@ app.delete('/contacts/:id', (req, res) => {
     deletedContacts.push(found)
     contacts.splice(index, 1)
     res.status(200).json({
-        contacts: found
+        contact: found
+    })
+})
+
+app.put('/contacts/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const found = findID(id)
+
+    if(!found) {
+        return res.status(404).json({
+            idError
+        })
+    }
+    const firstName = req.body.firstName
+    const lastName = req.body.lastName
+    const street = req.body.street
+    const city = req.body.city
+    const type = req.body.type
+    const email = req.body.email
+    const linkedin = req.body.linkedin
+    const twitter = req.body.twitter
+
+
+    found.firstName = firstName
+    found.lastName = lastName
+    found.street = street
+    found.city = city
+    found.type = type
+    found.email = email
+    found.linkedin = linkedin
+    found.twitter = twitter
+
+    res.status(200).json({
+        contact: found
     })
 })
 
