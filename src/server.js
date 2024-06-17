@@ -42,6 +42,8 @@ app.delete('/contacts/:id', (req, res) => {
 
     contacts = contacts.filter((contact) => contact.id !== contactID)
 
+    meetings = meetings.filter((meeting) => meeting.contactId !== contactID)
+
     res.json({contact: foundContact})
 })
 
@@ -60,6 +62,22 @@ app.put('/contacts/:id', (req, res) => {
 
 app.get('/meetings', (req, res) => {
     res.json({meetings})
+})
+
+app.get('/meetings/:id', (req, res) => {
+    const meetingID = Number(req.params.id)
+    const foundMeeting = meetings.find((meeting) => meeting.id === meetingID)
+
+    res.json({meeting: foundMeeting})
+})
+
+app.delete('/meetings/:id', (req, res) => {
+    const meetingID = Number(req.params.id)
+    const foundMeeting = meetings.find((meeting) => meeting.id === meetingID)
+
+    meetings = meetings.filter((meeting) => meeting.id !== meetingID)
+
+    res.json({meeting: foundMeeting})
 })
 
 module.exports = app
