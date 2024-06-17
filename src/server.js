@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const contacts = require("../data/contacts.js");
-const meetings = require('../data/meetings.js')
+const meetings = require("../data/meetings.js");
 const app = express();
 
 app.use(morgan("dev"));
@@ -39,6 +39,14 @@ app.delete("/contacts/:id", (req, res) => {
   }
   const index = contacts.indexOf(contact);
   contacts.splice(index, 1);
+
+  meetings.forEach((meeting) => {
+    if (meeting.contactId === Number(contactId)) {
+        const index = meetings.indexOf(meeting)
+        meetings.splice(index, 1)
+    }
+  })
+  
   res.status(200).json({ contact });
 });
 
@@ -58,16 +66,28 @@ app.put("/contacts/:id", (req, res) => {
 //MEETINGS RES/REQ
 
 app.get("/meetings", (req, res) => {
-    res.status(200).json({ meetings });
-})
+  res.status(200).json({ meetings });
+});
 
 app.get("/meetings/:id", (req, res) => {
+  const meetingId = req.params.id;
+  const meeting = meetings.find((meeting) => meeting.id === Number(meetingId));
+  if (!meeting) {
+    return res.status(404).json({ error: "No meeting with that ID" });
+  }
+  res.status(200).json({ meeting });
+});
+
+app.delete("/meetings/:id", (req, res) => {
     const meetingId = req.params.id;
     const meeting = meetings.find((meeting) => meeting.id === Number(meetingId));
     if (!meeting) {
-      return res.status(404).json({ error: "No contact with that ID" });
+      return res.status(404).json({ error: "No meeting with that ID" });
     }
+    const index = meetings.indexOf(meeting);
+    meetings.splice(index, 1);
     res.status(200).json({ meeting });
   });
+  
 
 module.exports = app;
