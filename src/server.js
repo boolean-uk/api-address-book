@@ -30,4 +30,13 @@ app.post('/contacts', (req, res) => {
     }
 })
 
+app.get('/contacts/:id', (req, res) => {
+    const contactID = Number(req.params.id)
+    console.log(contactID)
+
+    const foundContact = contacts.find((contact) => contact.id === contactID)
+
+    res.status(200).json({contact: foundContact})
+})
+
 module.exports = app
