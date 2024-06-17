@@ -7,12 +7,13 @@ app.use(morgan("dev"))
 app.use(cors())
 app.use(express.json())
 
-let contacts = require("../data/contacts")
+let contacts = require("../data/contacts.js")
+let meetings = require("../data/meetings.js")
 
 let idCounter = 3
 
 app.get('/contacts', (req, res) => {
-    res.status(200).json({
+    res.json({
         contacts
     })
 })
@@ -20,21 +21,19 @@ app.get('/contacts', (req, res) => {
 app.post('/contacts', (req, res) => {
     const contact = req.body
 
-    if (contact) {
-        contact.id = idCounter
-        contacts.push(contact)
+    contact.id = idCounter
+    contacts.push(contact)
 
-        idCounter++
+    idCounter++
 
-        res.status(201).json({contact})
-    }
+    res.status(201).json({contact})
 })
 
 app.get('/contacts/:id', (req, res) => {
     const contactID = Number(req.params.id)
     const foundContact = contacts.find((contact) => contact.id === contactID)
 
-    res.status(200).json({contact: foundContact})
+    res.json({contact: foundContact})
 })
 
 app.delete('/contacts/:id', (req, res) => {
@@ -43,7 +42,7 @@ app.delete('/contacts/:id', (req, res) => {
 
     contacts = contacts.filter((contact) => contact.id !== contactID)
 
-    res.status(200).json({contact: foundContact})
+    res.json({contact: foundContact})
 })
 
 app.put('/contacts/:id', (req, res) => {
@@ -56,7 +55,11 @@ app.put('/contacts/:id', (req, res) => {
 
     contacts.splice(foundContactIndex, 1, newContactInfo)
 
-    res.status(200).json({contact: newContactInfo})
+    res.json({contact: newContactInfo})
+})
+
+app.get('/meetings', (req, res) => {
+    res.json({meetings})
 })
 
 module.exports = app
