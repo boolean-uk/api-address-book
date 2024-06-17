@@ -108,6 +108,20 @@ app.delete("/meetings/:id", (req, res) => {
 
     res.status(200).json({ meetings: filteredMeetings })
   })
+
+  app.post("/contacts/:id/meetings", (req, res) => {
+    const contactId = req.params.id
+    const meetingName = req.body.name
+
+    const meeting = {
+        id: meetings.length + 1,
+        name: meetingName,
+        contactId: Number(contactId)
+    }
+
+    meetings.push(meeting)
+    res.status(201).json({ meeting })
+  })
   
 
 module.exports = app;
