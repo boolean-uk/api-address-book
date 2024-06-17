@@ -2,13 +2,14 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const contacts = require("../data/contacts.js");
+const meetings = require('../data/meetings.js')
 const app = express();
 
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 
-// write your app code here
+//CONTACTS RES/REQ
 
 app.get("/contacts", (req, res) => {
   res.status(200).json({ contacts });
@@ -53,5 +54,11 @@ app.put("/contacts/:id", (req, res) => {
   Object.assign(contact, updatedProperties);
   res.status(200).json({ contact });
 });
+
+//MEETINGS RES/REQ
+
+app.get("/meetings", (req, res) => {
+    res.status(200).json({ meetings });
+})
 
 module.exports = app;
