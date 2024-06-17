@@ -46,4 +46,17 @@ app.delete('/contacts/:id', (req, res) => {
     res.status(200).json({contact: foundContact})
 })
 
+app.put('/contacts/:id', (req, res) => {
+    const newContactInfo = req.body
+    const contactID = Number(req.params.id)
+    const foundContact = contacts.find((contact) => contact.id === contactID)
+    const foundContactIndex = contacts.indexOf(foundContact)
+    
+    newContactInfo.id = contactID
+
+    contacts.splice(foundContactIndex, 1, newContactInfo)
+
+    res.status(200).json({contact: newContactInfo})
+})
+
 module.exports = app
