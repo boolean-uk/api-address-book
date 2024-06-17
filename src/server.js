@@ -53,9 +53,8 @@ app.post('/contacts', (req, res) => {
     const email = req.body.email
     const linkedin = req.body.linkedin
     const twitter = req.body.twitter
-    const newID = contacts.reverse().find((c) => c.id)
 
-    newContact.id = newID.id +1
+    newContact.id = newID(contacts)
     newContact.firstName = firstName
     newContact.lastName = lastName
     newContact.street = street
@@ -89,6 +88,8 @@ app.get('/contacts/:id', (req, res) => {
 app.delete('/contacts/:id', (req, res) => {
     const id = Number(req.params.id)
     const found = findID(contacts, id)
+    const findMeetings = findID(meetings, id)
+    
 
     if(!found) {
         return res.status(404).json({
@@ -96,9 +97,11 @@ app.delete('/contacts/:id', (req, res) => {
         })
     }
     const index = contacts.indexOf(found)
+    const indexOfContact = meetings.indexOf(findMeetings)
 
     deletedContacts.push(found)
     contacts.splice(index, 1)
+    meetings.splice(indexOfContact, 1)
     res.status(200).json({
         contact: found
     })
@@ -161,7 +164,6 @@ app.get('/meetings/:id', (req, res) => {
 app.delete('/meetings/:id', (req, res) => {
     const id = Number(req.params.id)
     const found = findID(meetings, id)
-    const checkDeletedContact = findID(deletedContacts, id)
 
     if(!found) {
         return res.status(404).json({
