@@ -5,6 +5,7 @@ const app = express()
 const contacts = require('../data/contacts.js')
 const meetings = require('../data/meetings.js')
 const findID = require('./findID.js')
+const filterByContactId = require('./filterByContactId.js')
 const deletedContacts = require('../data/deletedContacts.js')
 const deletedMeetings = require("../data/deletedMeetings.js")
 
@@ -153,6 +154,7 @@ app.get('/meetings/:id', (req, res) => {
 app.delete('/meetings/:id', (req, res) => {
     const id = Number(req.params.id)
     const found = findID(meetings, id)
+    const contactFound = findID(contacts, id)
 
     if(!found) {
         return res.status(404).json({
@@ -180,12 +182,27 @@ app.put('/meetings/:id', (req, res) => {
         })
     }
 
-    foundMeeting.id = foundContact.id
+    foundMeeting.contactId = foundContact.id
     foundMeeting.name = req.body.name
     res.status(200).json({
         meeting: foundMeeting
     })
     
+})
+
+app.get('/contacts/:id/meetings', (req, res) => {
+    const id = Number(req.params.id)
+    const foundMeeting = filterByContactId(meetings, id)
+
+    if(!foundMeeting) {
+        return res.status(404).json({
+            idError
+        })
+    }
+
+    res.status(200).json({
+        meetings: foundMeeting
+    })
 })
 
 module.exports = app
