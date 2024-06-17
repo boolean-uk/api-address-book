@@ -88,6 +88,19 @@ app.delete("/meetings/:id", (req, res) => {
     meetings.splice(index, 1);
     res.status(200).json({ meeting });
   });
+
+  app.put("/meetings/:id", (req, res) => {
+    const meetingId = req.params.id;
+    const updatedProperties = req.body;
+    let meeting = meetings.find((meeting) => meeting.id === Number(meetingId));
+  
+    if (!meeting) {
+      return res.status(404).json({ error: "No contact with that ID" });
+    }
+  
+    Object.assign(meeting, updatedProperties);
+    res.status(200).json({ meeting });
+  });
   
 
 module.exports = app;
