@@ -61,4 +61,13 @@ app.get("/meetings", (req, res) => {
     res.status(200).json({ meetings });
 })
 
+app.get("/meetings/:id", (req, res) => {
+    const meetingId = req.params.id;
+    const meeting = meetings.find((meeting) => meeting.id === Number(meetingId));
+    if (!meeting) {
+      return res.status(404).json({ error: "No contact with that ID" });
+    }
+    res.status(200).json({ meeting });
+  });
+
 module.exports = app;
