@@ -3,8 +3,9 @@ const morgan = require("morgan")
 const cors = require("cors")
 const app = express()
 const contacts = require('../data/contacts.js')
+const { error } = require("console")
 
-let createContact = {
+let newContact = {
     id: 0,
     firstName: 'string',
     lastName: 'string',
@@ -14,6 +15,11 @@ let createContact = {
     email: 'string',
     linkedin: 'string',
     twitter: 'string'
+}
+
+const idError = {
+    error: 'invalid-ID',
+    message: 'ID provided does not exist, please ensure a valid ID is provided'
 }
 
 app.use(morgan("dev"))
@@ -35,20 +41,34 @@ app.post('/contacts', (req, res) => {
     const twitter = req.body.twitter
     const newID = contacts.reverse().find((c) => c.id)
 
-    createContact.id = newID.id += 1
-    createContact.firstName = firstName
-    createContact.lastName = lastName
-    createContact.street = street
-    createContact.city = city
-    createContact.type = type
-    createContact.email = email
-    createContact.linkedin = linkedin
-    createContact.twitter = twitter
+    newContact.id = newID.id +1
+    newContact.firstName = firstName
+    newContact.lastName = lastName
+    newContact.street = street
+    newContact.city = city
+    newContact.type = type
+    newContact.email = email
+    newContact.linkedin = linkedin
+    newContact.twitter = twitter
     
-    console.log(createContact)
-    contacts.push(createContact)
+    contacts.push(newContact)
     res.status(201).json({
-        createContact
+        newContact
+    })
+})
+
+app.get('/contacts/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const found = contacts.find((c) => c.id === id)
+
+    if(!found) {
+        return res.status(404).json({
+            idError
+        })
+    }
+
+    res.status(200).json({
+        contacts: found
     })
 })
 
