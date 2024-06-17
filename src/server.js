@@ -11,6 +11,7 @@ let contacts = require("../data/contacts.js")
 let meetings = require("../data/meetings.js")
 
 let idCounter = 3
+let meetingIdCounter = 4
 
 app.get('/contacts', (req, res) => {
     res.json({
@@ -97,11 +98,24 @@ app.put('/meetings/:id', (req, res) => {
 
 app.get('/contacts/:id/meetings', (req, res) => {
     const contactID = Number(req.params.id)
-    console.log(contactID)
 
     const filteredMeetings = meetings.filter((meeting) => meeting.contactId === contactID)
 
     res.json({meetings: filteredMeetings})
+})
+
+app.post('/contacts/:id/meetings', (req, res) => {
+    const contactID = Number(req.params.id)
+    const meetingInfo = req.body
+
+    meetingInfo.contactId = contactID
+    meetingInfo.id = meetingIdCounter
+
+    meetings.push(meetingInfo)
+
+    meetingIdCounter++
+
+    res.status(201).json({meeting: meetingInfo})
 })
 
 module.exports = app
