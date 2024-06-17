@@ -64,7 +64,7 @@ app.post('/contacts', (req, res) => {
 
 app.get('/contacts/:id', (req, res) => {
     const id = Number(req.params.id)
-    const found = findID(id)
+    const found = findID(contacts, id)
 
     if(!found) {
         return res.status(404).json({
@@ -79,7 +79,7 @@ app.get('/contacts/:id', (req, res) => {
 
 app.delete('/contacts/:id', (req, res) => {
     const id = Number(req.params.id)
-    const found = findID(id)
+    const found = findID(contacts, id)
 
     if(!found) {
         return res.status(404).json({
@@ -97,7 +97,7 @@ app.delete('/contacts/:id', (req, res) => {
 
 app.put('/contacts/:id', (req, res) => {
     const id = Number(req.params.id)
-    const found = findID(id)
+    const found = findID(contacts, id)
 
     if(!found) {
         return res.status(404).json({
@@ -131,6 +131,21 @@ app.put('/contacts/:id', (req, res) => {
 app.get('/meetings', (req, res) => {
     res.status(200).json({
         meetings: meetings
+    })
+})
+
+app.get('/meetings/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const found = findID(meetings, id)
+
+    if(!found) {
+        return res.status(404).json({
+            idError
+        })
+    }
+    
+    res.status(200).json({
+        meeting: found
     })
 })
 

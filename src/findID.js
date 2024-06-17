@@ -1,7 +1,7 @@
 const contacts = require('../data/contacts.js')
 
-function findID(id) {
-    const found = contacts.find((c) => c.id === id)
+function findID(data, id) {
+    const found = data.find((c) => c.id === id)
     return found
 }
 
