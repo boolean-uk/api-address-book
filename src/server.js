@@ -3,6 +3,7 @@ const morgan = require("morgan")
 const cors = require("cors")
 const app = express()
 const contacts = require('../data/contacts.js')
+const meetings = require('../data/meetings.js')
 const findID = require('./findID.js')
 const deletedContacts = require('../data/deletedContacts.js')
 
@@ -19,17 +20,6 @@ let newContact = {
     twitter: 'string'
 }
 
-let updatedContact = {
-    firstName: 'UPDATED',
-    lastName: 'UPDATED',
-    street: 'UPDATED',
-    city: 'UPDATED',
-    type: 'UPDATED',
-    email: 'UPDATED',
-    linkedin: 'UPDATED',
-    twitter: 'UPDATED'
-}
-
 const idError = {
     error: 'invalid-ID',
     message: 'ID provided does not exist, please ensure a valid ID is provided'
@@ -40,7 +30,9 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/contacts', (req, res) => {
-    res.status(200).json({contacts: contacts})
+    res.status(200).json({
+        contacts: contacts
+    })
 })
 
 app.post('/contacts', (req, res) => {
@@ -136,5 +128,10 @@ app.put('/contacts/:id', (req, res) => {
     })
 })
 
+app.get('/meetings', (req, res) => {
+    res.status(200).json({
+        meetings: meetings
+    })
+})
 
 module.exports = app
