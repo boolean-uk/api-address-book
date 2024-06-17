@@ -6,6 +6,7 @@ const contacts = require('../data/contacts.js')
 const meetings = require('../data/meetings.js')
 const findID = require('./findID.js')
 const deletedContacts = require('../data/deletedContacts.js')
+const deletedMeetings = require("../data/deletedMeetings.js")
 
 
 let newContact = {
@@ -143,7 +144,26 @@ app.get('/meetings/:id', (req, res) => {
             idError
         })
     }
-    
+
+    res.status(200).json({
+        meeting: found
+    })
+})
+
+app.delete('/meetings/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const found = findID(meetings, id)
+
+    if(!found) {
+        return res.status(404).json({
+            idError
+        })
+    }
+
+    const index = meetings.indexOf(found)
+    deletedMeetings.push(found)
+    meetings.splice(index, 1)
+
     res.status(200).json({
         meeting: found
     })
