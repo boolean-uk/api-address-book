@@ -7,7 +7,7 @@ app.use(morgan("dev"))
 app.use(cors())
 app.use(express.json())
 
-const contacts = require("../data/contacts")
+let contacts = require("../data/contacts")
 
 let idCounter = 3
 
@@ -32,9 +32,16 @@ app.post('/contacts', (req, res) => {
 
 app.get('/contacts/:id', (req, res) => {
     const contactID = Number(req.params.id)
-    console.log(contactID)
-
     const foundContact = contacts.find((contact) => contact.id === contactID)
+
+    res.status(200).json({contact: foundContact})
+})
+
+app.delete('/contacts/:id', (req, res) => {
+    const contactID = Number(req.params.id)
+    const foundContact = contacts.find((contact) => contact.id === contactID)
+
+    contacts = contacts.filter((contact) => contact.id !== contactID)
 
     res.status(200).json({contact: foundContact})
 })
