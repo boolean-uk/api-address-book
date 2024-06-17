@@ -3,7 +3,9 @@ const morgan = require("morgan")
 const cors = require("cors")
 const app = express()
 const contacts = require('../data/contacts.js')
-const { error } = require("console")
+const findID = require('./findID.js')
+const deletedContacts = require('../data/deletedContacts.js')
+
 
 let newContact = {
     id: 0,
@@ -59,7 +61,7 @@ app.post('/contacts', (req, res) => {
 
 app.get('/contacts/:id', (req, res) => {
     const id = Number(req.params.id)
-    const found = contacts.find((c) => c.id === id)
+    const found = findID(id)
 
     if(!found) {
         return res.status(404).json({
@@ -67,6 +69,24 @@ app.get('/contacts/:id', (req, res) => {
         })
     }
 
+    res.status(200).json({
+        contacts: found
+    })
+})
+
+app.delete('/contacts/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const found = findID(id)
+
+    if(!found) {
+        return res.status(404).json({
+            idError
+        })
+    }
+    const index = contacts.indexOf(found)
+
+    deletedContacts.push(found)
+    contacts.splice(index, 1)
     res.status(200).json({
         contacts: found
     })
