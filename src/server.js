@@ -22,6 +22,10 @@ app.get('/contacts', (req, res) => {
 app.post('/contacts', (req, res) => {
     const contact = req.body
 
+    if(!verifyContactProperties(contact)) {
+        return res.status(400).json({message: 'invalid body'})
+    }
+
     contact.id = idCounter
     contacts.push(contact)
 
@@ -51,6 +55,11 @@ app.delete('/contacts/:id', (req, res) => {
 app.put('/contacts/:id', (req, res) => {
     const newContactInfo = req.body
     const contactID = Number(req.params.id)
+
+    if(!verifyContactProperties(newContactInfo)) {
+        return res.status(400).json({message: 'invalid body'})
+    }
+
     const foundContact = contacts.find((contact) => contact.id === contactID)
     const foundContactIndex = contacts.indexOf(foundContact)
     
@@ -85,6 +94,10 @@ app.put('/meetings/:id', (req, res) => {
     const newMeetingInfo = req.body
     const contactID = Number(req.params.id)
 
+    if(!verifyMeetingProperties(newMeetingInfo)) {
+        return res.status(400).json({message: 'invalid body'})
+    }
+
     const foundMeeting = meetings.find((meeting) => meeting.contactId === contactID)
     const foundMeetingIndex = meetings.indexOf(foundMeeting)
     
@@ -108,6 +121,10 @@ app.post('/contacts/:id/meetings', (req, res) => {
     const contactID = Number(req.params.id)
     const meetingInfo = req.body
 
+    if(!verifyMeetingProperties(meetingInfo)) {
+        return res.status(400).json({message: 'invalid body'})
+    }
+
     meetingInfo.contactId = contactID
     meetingInfo.id = meetingIdCounter
 
@@ -117,5 +134,27 @@ app.post('/contacts/:id/meetings', (req, res) => {
 
     res.status(201).json({meeting: meetingInfo})
 })
+
+function verifyContactProperties(object) {
+    const neededProperties = ['firstName', 'lastName', 'street', 'city', 'type', 'email', 'linkedin', 'twitter']
+
+    for (const item of neededProperties) {
+        if (object[item] === undefined) {
+            return false
+        }
+    }
+
+    return true
+}
+
+function verifyMeetingProperties(object) {
+    const neededProperties = 'name'
+
+    if (object[neededProperties] === undefined) {
+        return false
+    }
+
+    return true
+}
 
 module.exports = app
