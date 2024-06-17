@@ -8,6 +8,7 @@ const findID = require('./findID.js')
 const filterByContactId = require('./filterByContactId.js')
 const deletedContacts = require('../data/deletedContacts.js')
 const deletedMeetings = require("../data/deletedMeetings.js")
+const newID = require("./newID.js")
 
 
 let newContact = {
@@ -25,6 +26,12 @@ let newContact = {
 const idError = {
     error: 'invalid-ID',
     message: 'ID provided does not exist, please ensure a valid ID is provided'
+}
+
+let newMeeting = {
+    id: 0,
+    contactId: 'string',
+    name: 'string'
 }
 
 app.use(morgan("dev"))
@@ -154,7 +161,7 @@ app.get('/meetings/:id', (req, res) => {
 app.delete('/meetings/:id', (req, res) => {
     const id = Number(req.params.id)
     const found = findID(meetings, id)
-    const contactFound = findID(contacts, id)
+    const checkDeletedContact = findID(deletedContacts, id)
 
     if(!found) {
         return res.status(404).json({
@@ -187,7 +194,6 @@ app.put('/meetings/:id', (req, res) => {
     res.status(200).json({
         meeting: foundMeeting
     })
-    
 })
 
 app.get('/contacts/:id/meetings', (req, res) => {
@@ -202,6 +208,26 @@ app.get('/contacts/:id/meetings', (req, res) => {
 
     res.status(200).json({
         meetings: foundMeeting
+    })
+})
+
+app.post('/contacts/:id/meetings', (req, res) => {
+    const id = Number(req.params.id)
+    const foundContact = findID(contacts, id)
+
+    if(!foundContact) {
+        return res.status(404).json({
+            idError
+        })
+    }
+
+    newMeeting.id = newID(meetings)
+    newMeeting.contactId = foundContact.id
+    newMeeting.name = req.body.name
+
+    meetings.push(newMeeting)
+    res.status(201).json({
+        meeting: newMeeting
     })
 })
 
