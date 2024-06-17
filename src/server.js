@@ -95,4 +95,13 @@ app.put('/meetings/:id', (req, res) => {
     res.json({meeting: newMeetingInfo})
 })
 
+app.get('/contacts/:id/meetings', (req, res) => {
+    const contactID = Number(req.params.id)
+    console.log(contactID)
+
+    const filteredMeetings = meetings.filter((meeting) => meeting.contactId === contactID)
+
+    res.json({meetings: filteredMeetings})
+})
+
 module.exports = app
