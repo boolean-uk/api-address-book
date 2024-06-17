@@ -101,6 +101,13 @@ app.delete("/meetings/:id", (req, res) => {
     Object.assign(meeting, updatedProperties);
     res.status(200).json({ meeting });
   });
+
+  app.get("/contacts/:id/meetings", (req, res) => {
+    const contactId = req.params.id
+    const filteredMeetings = meetings.filter((meeting) => meeting.contactId === Number(contactId))
+
+    res.status(200).json({ meetings: filteredMeetings })
+  })
   
 
 module.exports = app;
