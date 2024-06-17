@@ -9,7 +9,7 @@ app.use(express.json());
 
 // write your app code here
 
-const contacts = require("/Users/samisaeed/Boolean/api-express-address-book/data/contacts.js");
+const contacts = require("../data/contacts.js");
 
 app.get("/contacts", (req, res) => {
   res.json({
