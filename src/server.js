@@ -80,4 +80,19 @@ app.delete('/meetings/:id', (req, res) => {
     res.json({meeting: foundMeeting})
 })
 
+app.put('/meetings/:id', (req, res) => {
+    const newMeetingInfo = req.body
+    const contactID = Number(req.params.id)
+
+    const foundMeeting = meetings.find((meeting) => meeting.contactId === contactID)
+    const foundMeetingIndex = meetings.indexOf(foundMeeting)
+    
+    newMeetingInfo.id = foundMeeting.id
+    newMeetingInfo.contactId = contactID
+
+    meetings.splice(foundMeetingIndex, 1, newMeetingInfo)
+
+    res.json({meeting: newMeetingInfo})
+})
+
 module.exports = app
