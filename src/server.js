@@ -45,7 +45,7 @@ app.get('/contacts/:id', (req, res) => {
   if(!found) {
    return res.status(404).json('Didnt find anything')
   }
-  return res.status(200).json(found)
+  return res.status(200).json( found )
 })
 
 app.delete('/contacts/:id', (req, res) => {
@@ -57,11 +57,45 @@ app.delete('/contacts/:id', (req, res) => {
     return res.status(404).json('Didnt find anything')
    }
 
-   contacts.splice(found,1)
-   return res.json(contacts)
+   contacts.splice( found, 1 )
+   return res.status(200).json({ contacts })
 })
 
+app.put('/contacts/:id', (req, res) => {
+  const {firstName, lastName, street, city, type, email, linkedin, twitter } = req.body
+  const id = Number(req.params.id)
+  let myIndex = 0
+  console.log('test1')
+  const found = contacts.findIndex((c, index) => {
+    
+    myIndex = index
+    console.log(c.id, 'test,', id)
+    return c.id === id
+  })
+  console.log(found)
+  if(found === -1) {
+    console.log('test3')
+    return res.status(404).json({
+      message : 'Didnt Find the contact with that id!'
+    })
+  }
 
+  contacts[myIndex] = {
+    id:id,
+    firstName :firstName,
+    lastName : lastName,
+    street : street,
+    city : city,
+    type : type,
+    email: email,
+    linkedin: linkedin,
+    twitter : twitter
+  }
+
+  res.status(200).json(contacts)
+
+
+})
 
 
 
