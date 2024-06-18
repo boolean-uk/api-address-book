@@ -34,7 +34,7 @@ app.post('/contacts', (req, res) => {
   }
   contacts.push(newContact)
 
-  res.status(201).json(contacts)
+  return res.status(201).json(contacts)
 
 })
 
@@ -45,7 +45,20 @@ app.get('/contacts/:id', (req, res) => {
   if(!found) {
    return res.status(404).json('Didnt find anything')
   }
-  res.status(200).json(found)
+  return res.status(200).json(found)
+})
+
+app.delete('/contacts/:id', (req, res) => {
+  const id = Number(req.params.id)
+
+  const found = contacts.findIndex(c => c.id === id)
+  console.log(found)
+  if(found === -1 || found === undefined) {
+    return res.status(404).json('Didnt find anything')
+   }
+
+   contacts.splice(found,1)
+   return res.json(contacts)
 })
 
 
