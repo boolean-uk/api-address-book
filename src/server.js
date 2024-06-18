@@ -38,6 +38,16 @@ app.post('/contacts', (req, res) => {
 
 })
 
+app.get('/contacts/:id', (req, res) => {
+  const id = Number(req.params.id)
+
+  const found = contacts.find(c => c.id === id)
+  if(!found) {
+   return res.status(404).json('Didnt find anything')
+  }
+  res.status(200).json(found)
+})
+
 
 
 
