@@ -52,13 +52,13 @@ app.delete('/contacts/:id', (req, res) => {
   const id = Number(req.params.id)
 
   const found = contacts.findIndex(c => c.id === id)
-  console.log(found)
   if(found === -1 || found === undefined) {
     return res.status(404).json('Didnt find anything')
    }
 
-   contacts.splice( found, 1 )
-   return res.status(200).json({ contacts })
+   const newContact = contacts.splice( found, 1 )
+   console.log(newContact)
+   return res.status(200).json(newContact)
 })
 
 app.put('/contacts/:id', (req, res) => {
