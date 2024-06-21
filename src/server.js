@@ -22,16 +22,14 @@ app.post("/contacts", (req, res)=>{
     const newContact = req.body
     newContact.id = contact_id_key
     contacts.push(newContact)
-
     contact_id_key++
-
-    res.status(201).json({contact})
-})
+    res.status(201).json({contact:newContact});
+});
 
 app.get("/contacts/:id", (req, res)=>{
     const id = Number(req.params.id)
-    const found = contacts.find((contact) => contact.id === id)
-    res.json({contact: found})
+    const found = contacts.find((contact) => contact.id === id);
+    res.json({contact: found});
 })
 
 
@@ -39,12 +37,13 @@ app.put("/contacts/:id", (req, res) => {
     const id = Number(req.params.id);
     const updates = req.body;
     let found = contacts.find((contact) => contact.id === id);
-    found = { ...found, ...updates };
-    res.json({ contact: found });
-  });
+    const foundIndex = contacts.indexOf(found)
+    const updated = { ...found, ...updates };
+    contacts.splice(foundIndex, 1, updated)
+    res.json({ contact: updated });
+});
+ 
   
-  
-
 app.delete("/contacts/:id", (req, res) => {
     const id = Number(req.params.id);
     const found = contacts.find((contact) => contact.id === id);
