@@ -10,6 +10,7 @@ app.use(express.json())
 // write your app code here
 
 let contacts = require("../data/contacts.js")
+let contact_id_key = contacts.length + 1
 
 app.get("/contacts", (req, res)=>{
     res.json({
@@ -17,7 +18,15 @@ app.get("/contacts", (req, res)=>{
     })
 })
 
-app.post("/contacts", (req, res)=>{})
+app.post("/contacts", (req, res)=>{
+    const newContact = req.body
+    newContact.id = contact_id_key
+    contacts.push(newContact)
+
+    contact_id_key++
+
+    res.status(201).json({contact})
+})
 
 app.get("/contacts/:id", (req, res)=>{})
 
