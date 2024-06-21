@@ -52,4 +52,16 @@ app.delete("/contacts/:id", (req, res) => {
   });
   
 
+  //meetings
+  let meetings = require("../data/meetings.js");
+  let meeting_id_key = meetings.length + 1;
+  
+  app.get("/meetings", (req, res) => {
+      res.json({
+          meetings,
+      });
+    });
+  
+
+
 module.exports = app
