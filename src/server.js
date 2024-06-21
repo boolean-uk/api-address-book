@@ -62,10 +62,10 @@ app.delete('/contacts/:id', (request, respond) => {
     const id = parseInt(request.params.id)
     const index = contacts.findIndex(c => c.id === id)
     if (index !== -1) {
-        const deleteContact = contacts.splice(index, 1)
-        respond.status(200).json ({ contact: deleteContact[0] })
+        const deletedContact = contacts.splice(index, 1)
+        respond.status(200).json ({ contact: deletedContact[0] })
     } else {
-        respond.status(404).json('contacts not found')
+        respond.status(404).json('Message: contacts not found')
     }
 })
 
