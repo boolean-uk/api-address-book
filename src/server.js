@@ -16,10 +16,12 @@ let contacts = [
 ]
 let nextId = 4
 
+//gets all contacts
 app.get('/contacts', (request, respond) => {
     respond.status(200).json({ contacts })
 })
 
+// gets a contact by Id
 app.get('/contacts/:id', (request, respond) => {
     const id = parseInt(request.params.id)
     const contact = contacts.find(c => c.id === id)
@@ -31,6 +33,7 @@ app.get('/contacts/:id', (request, respond) => {
     }
 }) 
 
+//create a new contact
 app.post('/contacts', (request, respond) => {
    const newContact = request.body
    newContact.id = nextId++
@@ -39,18 +42,22 @@ app.post('/contacts', (request, respond) => {
 
 })
 
+// edit and update a contact
 app.put('/contacts/:id', (request, respond) => {
     const id = parseInt(request.params.id)
     const index = contacts.findIndex (c => c.id === id)
     if (index !== -1) {
         contacts[index] = {...contacts[index], ...request.body}
-        respond.status(200).json({contacts: contacts[index]})
+        const updatedContact = contacts[index]
+        respond.status(200).json({contact: updatedContact})
     } else {
-        respond.status(404).json('Contacts not found')
+        respond.status(404).json('Message: Contacts not found')
     }
    
 })
 
+
+//then delete a contact
 app.delete('/contacts/:id', (request, respond) => {
     const id = parseInt(request.params.id)
     const index = contacts.findIndex(c => c.id === id)
