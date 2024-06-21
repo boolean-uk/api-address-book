@@ -74,6 +74,17 @@ app.delete("/contacts/:id", (req, res) => {
         meetings = meetings.filter((meeting) => meeting.id !== id);
         res.json({ meeting: found });
       });
+
+      app.put("/meetings/:id", (req, res) => {
+        const id = Number(req.params.id);
+        const updates = req.body;
+        const found = meetings.find((meeting) => meeting.id === id);
+        const foundIndex = meetings.indexOf(found);
+        const updated = { ...found, ...updates };
+        meetings.splice(foundIndex, 1, updated);
+        res.json({ meeting: updated });
+      });
+      
       
 
 module.exports = app
