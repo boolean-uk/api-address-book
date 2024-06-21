@@ -21,7 +21,7 @@ app.post('/contacts', (req, res) => {
   const {firstName, lastName, street, city, type, email, linkedin, twitter } = req.body
   
   id++
-  const newContact = {
+  const contact = {
     id,
     firstName,
     lastName,
@@ -32,48 +32,48 @@ app.post('/contacts', (req, res) => {
     linkedin,
     twitter
   }
-  contacts.push(newContact)
+  contacts.push(contact)
 
-  return res.status(201).json(contacts)
+  return res.status(201).json({contact})
 
 })
 
 app.get('/contacts/:id', (req, res) => {
   const id = Number(req.params.id)
 
-  const found = contacts.find(c => c.id === id)
-  if(!found) {
+  const contact = contacts.find(c => c.id === id)
+  if(!contact) {
    return res.status(404).json('Didnt find anything')
   }
-  return res.status(200).json( found )
+  res.status(200).json( {contact} )
 })
 
 app.delete('/contacts/:id', (req, res) => {
   const id = Number(req.params.id)
 
   const found = contacts.findIndex(c => c.id === id)
+  console.log('index ', found, 'id ', id)
   if(found === -1 || found === undefined) {
     return res.status(404).json('Didnt find anything')
    }
 
-   const newContact = contacts.splice( found, 1 )
-   console.log(newContact)
-   return res.status(200).json(newContact)
+   const contact = contacts.splice( found, 1 )
+
+   console.log(contact[0].id)
+   res.status(200).json({contact : contact[0]})
 })
 
 app.put('/contacts/:id', (req, res) => {
   const {firstName, lastName, street, city, type, email, linkedin, twitter } = req.body
   const id = Number(req.params.id)
   let myIndex = 0
-  console.log('test1')
-  const found = contacts.findIndex((c, index) => {
+  const contact = contacts.findIndex((c, index) => {
     
     myIndex = index
     console.log(c.id, 'test,', id)
     return c.id === id
   })
-  console.log(found)
-  if(found === -1) {
+  if(contact === -1) {
     console.log('test3')
     return res.status(404).json({
       message : 'Didnt Find the contact with that id!'
@@ -92,7 +92,7 @@ app.put('/contacts/:id', (req, res) => {
     twitter : twitter
   }
 
-  res.status(200).json(contacts)
+  return res.status(200).json({contact : contacts[myIndex]})
 
 
 })
