@@ -9,5 +9,9 @@ app.use(express.json())
 
 // write your app code here
 
+app.get('/', (request, respond) => {
+    respond.send('Hello world')
+})
+
 
 module.exports = app
