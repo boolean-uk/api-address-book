@@ -47,7 +47,7 @@ app.delete('/contacts/:id', (req, res) => {
     const contactFound = contacts.find((c) => c.id === id)
     const contactIndex = contacts.indexOf(contactFound)
     contacts.splice(contactIndex, 1)
-    return res.status(200).json({ contactFound })
+    return res.status(200).json({ contact: contactFound })
 })
 
 app.put('/contacts/:id', (req, res) => {
