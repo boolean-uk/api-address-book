@@ -84,6 +84,13 @@ app.delete("/contacts/:id", (req, res) => {
         meetings.splice(foundIndex, 1, updated);
         res.json({ meeting: updated });
       });
+
+      app.get("/contact/:id/meeting", (req, res) => {
+        const id = Number(req.params.id);
+        const found = meetings.find((meeting) => meeting.contactId === id);
+        res.json({ meetings: found });
+    });
+    
       
       
 
