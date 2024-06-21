@@ -68,6 +68,12 @@ app.delete("/contacts/:id", (req, res) => {
       res.json({ meeting: found });
       });
     
-
+      app.delete("/meetings/:id", (req, res) => {
+        const id = Number(req.params.id);
+        const found = meetings.find((meeting) => meeting.id === id);
+        meetings = meetings.filter((meeting) => meeting.id !== id);
+        res.json({ meeting: found });
+      });
+      
 
 module.exports = app
