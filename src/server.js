@@ -32,7 +32,6 @@ app.get("/contacts/:id", (req, res)=>{
     res.json({contact: found});
 })
 
-
 app.put("/contacts/:id", (req, res) => {
     const id = Number(req.params.id);
     const updates = req.body;
@@ -48,6 +47,7 @@ app.delete("/contacts/:id", (req, res) => {
     const id = Number(req.params.id);
     const found = contacts.find((contact) => contact.id === id);
     contacts = contacts.filter((contact) => contact.id !== id);
+    meetings = meetings.filter((meeting) => meeting.contactId !== id);
     res.json({ contact: found });
   });
   
@@ -63,7 +63,7 @@ app.delete("/contacts/:id", (req, res) => {
     });
   
     app.get("/meetings/:id", (req, res) => {
-        const id = Number(req.params.id);
+      const id = Number(req.params.id);
       const found = meetings.find((meeting) => meeting.id === id);
       res.json({ meeting: found });
       });
@@ -85,11 +85,22 @@ app.delete("/contacts/:id", (req, res) => {
         res.json({ meeting: updated });
       });
 
-      app.get("/contact/:id/meeting", (req, res) => {
+      app.get("/contacts/:id/meetings", (req, res) => {
         const id = Number(req.params.id);
-        const found = meetings.find((meeting) => meeting.contactId === id);
+        const found = meetings.filter((meeting) => meeting.contactId === id);
         res.json({ meetings: found });
     });
+
+    app.post("/contacts/:id/meetings", (req, res) => {
+        const contactId = Number(req.params.id);
+        const newMeeting = req.body;
+        newMeeting.id = meeting_id_key;
+        newMeeting.contactId = contactId;
+        meetings.push(newMeeting);
+        meeting_id_key++;
+        res.status(201).json({ meeting: newMeeting });
+      });
+        
     
       
       
