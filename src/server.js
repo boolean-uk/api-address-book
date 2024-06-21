@@ -25,13 +25,24 @@ app.post("/contacts", (req, res)=>{
 
     contact_id_key++
 
-    res.status(201).json({contact})
+    res.status(201).json({contacts})
 })
 
-app.get("/contacts/:id", (req, res)=>{})
+app.get("/contacts/:id", (req, res)=>{
+    const id = Number(req.params.id)
+    const found = contacts.find((contact) => contact.id === id)
+    res.json({contact: found})
+})
+
 
 app.put("/contacts", (req, res)=>{})
 
-app.delete("/contacts", (req, res)=>{})
+app.delete("/contacts/:id", (req, res) => {
+    const id = Number(req.params.id);
+    const found = contacts.find((contact) => contact.id === id);
+    contacts = contacts.filter((contact) => contact.id !== id);
+    res.json({ contact: found });
+  });
+  
 
 module.exports = app
