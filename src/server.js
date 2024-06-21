@@ -31,8 +31,31 @@ app.get('/contacts/:id', (req, res) => {
     })
 })
 
+let id = contacts.length + 1
 app.post('/contacts', (req, res) => {
-    req.body
+	const contact = req.body
+	contact.id = id
+	id++
+	contacts.push(contact)
+
+	res.status(201).json({ contact })
+})
+
+app.delete('/contacts/:id', (req, res) => {
+    const id = Number(req.params.id)
+  
+    const contactFound = contacts.find((c) => c.id === id)
+    const contactIndex = contacts.indexOf(contactFound)
+    contacts.splice(contactIndex, 1)
+    return res.status(200).json({ contactFound })
+})
+
+app.put('/contacts/:id', (req, res) => {
+	const contactId = Number(req.params.id)
+	const updatedContact = req.body
+	updatedContact.id = contactId
+	contacts.splice(contactId - 1, 1, updatedContact)
+	res.status(200).json({ 'contact': updatedContact })
 })
 
 module.exports = app
