@@ -10,11 +10,11 @@ app.use(express.json())
 // write your app code here
 
 let contacts = [
-    {id: 1, firstName: 'Abiodun', lastName: 'Oluwagbemi'}, 
-    {id: 2, firstName: 'Nathan', lastName: 'King'},
-    {id: 3, firstName: 'Lewis', lastName: 'Capaldi'}
+    {id: 1, firstName: 'John', lastName: 'Carmack'}, 
+    {id: 2, firstName: 'Grace', lastName: 'Hopper'},
+   
 ]
-let nextId = 4
+let nextId = 3
 
 //gets all contacts
 app.get('/contacts', (request, respond) => {
@@ -29,7 +29,7 @@ app.get('/contacts/:id', (request, respond) => {
         respond.status(200).json({ contact })
     } else {
         //respond.status(404).send('Contact not found')
-       respond.status(404).json({ contact })
+       respond.status(404).json({ message: 'contact not found' })
     }
 }) 
 
