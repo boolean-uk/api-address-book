@@ -2,7 +2,7 @@
   "name": "api-address-book",
   "version": "1.0.0",
   "description": "- Explain how to set up and run an Express application - Build a simple Express API and send a HTTP request to an available endpoint using a HTTP client - Explain that JSON is a widely-used language-agnostic format for encoding data as attribute value pairs - Diagram the request and response cycle for an Express API. - Use console.log() and read the result in the server logs",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "npx nodemon ./src/index.js",
     "test": "npx jest -i ./test/api/standard --forceExit",
@@ -20,12 +20,17 @@
   "homepage": "https://github.com/boolean-uk/api-address-book#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "morgan": "^1.10.0",
-    "nodemon": "^3.0.1"
+    "express": "^4.19.2",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",
+    "nodemon": "^3.1.4",
     "supertest": "^6.2.3"
-  }
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "keywords": []
 }
