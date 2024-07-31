@@ -16,13 +16,26 @@ app.get("/contacts", function (req, res) {
 });
 
 app.post("/contacts", function (req, res) {
-  const postContact = req.body;
+  const { firstName, lastName, street, city, type, email, linkedin, twitter } =
+    req.body;
+  if (
+    !firstName ||
+    !lastName ||
+    !street ||
+    !city ||
+    !type ||
+    !email ||
+    !linkedin ||
+    !twitter
+  ) {
+    return res.status(400);
+  }
   const currentHighId = contacts.reduce((max, obj) => {
     return obj.id > max ? obj.id : max;
   }, 0);
-  postContact.id = currentHighId + 1;
-  contacts.push(postContact);
-  res.status(200).json({ contacts: contacts });
+  req.body.id = currentHighId + 1;
+  contacts.push(req.body);
+  res.status(201).json({ contacts: contacts });
 });
 
 app.get("/contacts/:id", function (req, res) {
@@ -41,6 +54,31 @@ app.delete("/contacts/:id", function (req, res) {
   updated = contacts.filter((obj) => obj.id !== toRemove);
   contacts = updated;
   res.status(200).json({ contacts: contacts });
+});
+
+app.put("/contacts/:id", function (req, res) {
+  const id = parseInt(req.params.id, 10);
+  const contactIndex = contacts.findIndex((contact) => contact.id === id);
+  if (contactIndex === -1) {
+    return res.status(404).json({ error: "Contact not found" });
+  }
+
+  const { firstName, lastName, street, city, type, email, linkedin, twitter } =
+    req.body;
+  const updatedContact = {
+    ...contacts[contactIndex],
+    firstName,
+    lastName,
+    street,
+    city,
+    type,
+    email,
+    linkedin,
+    twitter,
+  };
+  contacts[contactIndex] = updatedContact;
+
+  res.status(200).json({ updatedContact });
 });
 
 module.exports = app;
