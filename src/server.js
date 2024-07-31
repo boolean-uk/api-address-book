@@ -35,7 +35,7 @@ app.post("/contacts", function (req, res) {
   }, 0);
   req.body.id = currentHighId + 1;
   contacts.push(req.body);
-  res.status(201).json({ contacts: contacts });
+  res.status(201).json({ contact: req.body });
 });
 
 app.get("/contacts/:id", function (req, res) {
@@ -51,9 +51,15 @@ app.get("/contacts/:id", function (req, res) {
 
 app.delete("/contacts/:id", function (req, res) {
   const toRemove = parseInt(req.params.id, 10);
-  updated = contacts.filter((obj) => obj.id !== toRemove);
-  contacts = updated;
-  res.status(200).json({ contacts: contacts });
+  const contactIndex = contacts.findIndex((obj) => obj.id === toRemove);
+  if (contactIndex === -1) {
+    return res.status(404).json({ error: "Contact not found" });
+  }
+
+  const deletedContact = contacts[contactIndex];
+  contacts = contacts.filter((obj) => obj.id !== toRemove);
+
+  res.status(200).json({ contact: deletedContact });
 });
 
 app.put("/contacts/:id", function (req, res) {
@@ -78,7 +84,7 @@ app.put("/contacts/:id", function (req, res) {
   };
   contacts[contactIndex] = updatedContact;
 
-  res.status(200).json({ updatedContact });
+  res.status(200).json({ contact: updatedContact });
 });
 
 module.exports = app;
