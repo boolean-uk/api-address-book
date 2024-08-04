@@ -54,8 +54,8 @@ app.put('/contacts/:id', (req, res) => {
 app.delete('/contacts/:id', (req, res) => {
     const id = parseInt(req.params.id)
 
-    const deletedContact = contacts.find((contact) => contact.id === id)
-    contacts = contacts.filter((contact) => contact.id !== id)
+    const contactIndex = contacts.findIndex((contact) => contact.id === id)
+    const [deletedContact] = contacts.splice(contactIndex, 1)
 
     res.status(200).json({ contact: deletedContact })
 })
