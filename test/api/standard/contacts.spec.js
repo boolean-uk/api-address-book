@@ -100,6 +100,7 @@ describe('Address Book API', () => {
 
       expect(response.status).toEqual(200)
       expect(response.body.contacts).not.toEqual(undefined)
+      // console.log('body', response.body)
       expect(response.body.contacts.length).toEqual(2)
 
       const [contact1, contact2] = response.body.contacts
