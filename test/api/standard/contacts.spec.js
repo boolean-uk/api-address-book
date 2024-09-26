@@ -18,10 +18,10 @@ describe('Address Book API', () => {
       expect(response.body.contacts.length).toEqual(2)
 
       const [contact1, contact2] = response.body.contacts
-      expect(contact1.firstName).toEqual("John")
-      expect(contact1.lastName).toEqual("Carmack")
-      expect(contact2.firstName).toEqual("Grace")
-      expect(contact2.lastName).toEqual("Hopper")
+      expect(contact1.firstName).toEqual('John')
+      expect(contact1.lastName).toEqual('Carmack')
+      expect(contact2.firstName).toEqual('Grace')
+      expect(contact2.lastName).toEqual('Hopper')
     })
   })
 
@@ -34,8 +34,8 @@ describe('Address Book API', () => {
 
       const contact = response.body.contact
       expect(contact.id).toEqual(2)
-      expect(contact.firstName).toEqual("Grace")
-      expect(contact.lastName).toEqual("Hopper")
+      expect(contact.firstName).toEqual('Grace')
+      expect(contact.lastName).toEqual('Hopper')
     })
   })
 
@@ -55,9 +55,7 @@ describe('Address Book API', () => {
     })
 
     it('adds contact to data store', async () => {
-      await supertest(app)
-        .post('/contacts')
-        .send(createTestFormData)
+      await supertest(app).post('/contacts').send(createTestFormData)
 
       const response = await supertest(app).get('/contacts')
 
@@ -92,9 +90,7 @@ describe('Address Book API', () => {
     })
 
     it('updated contact is in data store', async () => {
-      await supertest(app)
-        .put(`/contacts/1`)
-        .send(updateTestFormData)
+      await supertest(app).put(`/contacts/1`).send(updateTestFormData)
 
       const response = await supertest(app).get('/contacts')
 
@@ -110,8 +106,7 @@ describe('Address Book API', () => {
 
   describe('DELETE /contacts', () => {
     it('returns deleted contact', async () => {
-      const response = await supertest(app)
-        .delete(`/contacts/1`)
+      const response = await supertest(app).delete(`/contacts/1`)
 
       expect(response.status).toEqual(200)
       expect(response.body.contact).not.toEqual(undefined)
@@ -119,8 +114,7 @@ describe('Address Book API', () => {
     })
 
     it('removes contact from data store', async () => {
-      const response = await supertest(app)
-        .delete(`/contacts/1`)
+      const response = await supertest(app).delete(`/contacts/1`)
 
       const deletedContact = response.body.contact
 
