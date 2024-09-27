@@ -9,6 +9,7 @@ const contacts = [
     "email": "test@test.com",
     "linkedin": "https://www.linkedin.com/school/boolean-uk/",
     "twitter": "https://twitter.com/booleanuk"
+    
   },
   {
     "id": 2,

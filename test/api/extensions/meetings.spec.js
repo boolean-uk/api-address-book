@@ -60,7 +60,7 @@ describe('Address Book API', () => {
         expect(meeting).not.toEqual(undefined)
         expect(meeting.id).toEqual(1)
         expect(meeting.name).toEqual(createTestFormData.name)
-        expect(meeting.contactId).toEqual(1)
+        expect(meeting.contactId).toEqual("1")
       })
 
       it('datastore is updated with meeting', async () => {
@@ -155,7 +155,7 @@ describe('Address Book API', () => {
       const meeting = response.body.meeting
       expect(meeting.id).toEqual(4)
       expect(meeting.name).toEqual(createTestFormData.name)
-      expect(meeting.contactId).toEqual(1)
+      expect(meeting.contactId).toEqual("1")
     })
 
     it('adds meeting to data store for contact of id 1', async () => {
